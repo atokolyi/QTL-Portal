@@ -18,6 +18,7 @@ services:
       - mysql-data:/var/lib/mysql
       - "./data/:/home/data/"
       - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./import.sh:/home/import.sh
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.0.1
     restart: always
