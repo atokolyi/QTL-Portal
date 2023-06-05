@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Domine
+- Font Author: Copyright 2020 The Domine Project Authors (https://github.com/googlefonts/domine)
+- Font Source: http://fonts.gstatic.com/s/domine/v19/L0xhDFMnlVwD4h3Lt9JWnbX3jG-2X3LAI10VErGuW8Q.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))

@@ -1,0 +1,68 @@
+.beta {
+  display: block;
+  width: 100%;
+}
+.beta thead {
+  display: block;
+  position: relative;
+}
+.beta thead tr {
+  display: flex;
+}
+.beta thead th {
+  flex-grow: 1;
+  position: absolute;
+  top: 100%;
+  z-index: 9;
+  width: 140px !important;
+  left: 0;
+  height: 80px;
+  box-sizing: border-box;
+  color: #fff;
+  border: unset;
+  align-items: center;
+  font-weight: bold;
+  background-color: #65696b;
+}
+.beta thead th:nth-child(2) {
+  top: calc(100% + 80px * 1);
+}
+.beta thead th:nth-child(3) {
+  top: calc(100% + 80px * 2);
+}
+.beta thead th:nth-child(4) {
+  top: calc(100% + 80px * 3);
+}
+.beta thead th:nth-child(5) {
+  top: calc(100% + 80px * 4);
+}
+.beta thead th:nth-child(6) {
+  top: calc(100% + 80px * 5);
+}
+.beta thead th:nth-child(7) {
+  top: calc(100% + 80px * 6);
+}
+
+.beta tbody {
+  display: flex;
+  width: 100%;
+  overflow-x: scroll;
+  padding-left: 140px;
+  min-height: calc(80px * 6 + 18px);
+}
+.beta tbody tr {
+  display: block;
+  box-sizing: border-box;
+}
+.beta tbody td {
+  display: block;
+  height: 80px;
+  width: 100px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.beta tbody td:not(:last-child)::before {
+  border-bottom: 1px solid #f2e7e7f5;
+}
+
