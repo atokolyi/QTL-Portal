@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 code_id=$1
 nice_id=$2
 phen_stats_file=$3

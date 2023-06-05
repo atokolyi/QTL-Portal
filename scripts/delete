@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+code_id=$1
+
+mysql -u root -ptest <<END_INPUT
+
+use interval;
+drop table ${code_id}_sumstats;
+drop table ${code_id}_phenstats;
+delete from projects where code_name="${code_id}";
+
+END_INPUT

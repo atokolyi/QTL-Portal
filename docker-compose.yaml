@@ -10,15 +10,17 @@ services:
     ports:
       - "8080:80"
   mysql-server:
-    image: mariadb
+    build:
+      dockerfile: maria.Dockerfile
+      context: .
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: test
     volumes:
       - mysql-data:/var/lib/mysql
       - "./data/:/home/data/"
-      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
-      - ./import.sh:/home/import.sh
+      - "./scripts/:/home/scripts/"
+      - ./scripts/db_init.sql:/docker-entrypoint-initdb.d/db_init.sql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.0.1
     restart: always
