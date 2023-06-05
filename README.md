@@ -1,4 +1,4 @@
-# QTL Portal: View & explore summary statistics in your browser
+# QTL-Portal: View & explore summary statistics in your browser
 
 <!-- GETTING STARTED -->
 ## Getting Started
