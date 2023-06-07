@@ -32,11 +32,12 @@ $primaryKey = 'phenotype_id';
 $columns = array(
     array( 'db' => 'phenotype_id', 'dt' => 0 ),
     array( 'db' => 'gene_name', 'dt' => 1 ),
-    array( 'db' => 'gene_type', 'dt' => 2 ),
-    array( 'db' => 'gene_range', 'dt' => 3 ),
+    array( 'db' => 'gene_chr_int', 'dt' => 2 ),
+    array( 'db' => 'gene_start', 'dt' => 3 ),
     array( 'db' => 'variant_rsid',  'dt' => 4 ),
-    array( 'db' => 'qval_all',   'dt' => 5 ),
+    array( 'db' => 'qval',   'dt' => 5 ),
     array( 'db' => 'z_score_abs',   'dt' => 6 ),
+    array( 'db' => 'gene_end', 'dt' => 7 ),
 );
  
     // array( 'db' => 'abs(slope/slope_se)',   'dt' => 5 ),

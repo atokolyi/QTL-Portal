@@ -18,7 +18,7 @@ ini_set('display_errors', 1);
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Easy set variables
  */
-$phen=preg_replace("/[^A-Za-z0-9]/", '', $_GET['phenotype_id']);
+$phen=preg_replace("/[^A-Za-z0-9\.]/", '', $_GET['phenotype_id']);
  
 // DB table to use
 $table = $_GET['id'].'_sumstats';
@@ -31,8 +31,8 @@ $primaryKey = 'phenotype_id';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(
-    array( 'db' => 'variant_rsid', 'dt' => 0 ),
-    array( 'db' => 'variant_posid', 'dt' => 1 ),
+    array( 'db' => 'variant_posid', 'dt' => 0 ),
+    array( 'db' => 'tss_distance', 'dt' => 1 ),
     array( 'db' => 'af', 'dt' => 2 ),
     array( 'db' => 'slope', 'dt' => 3 ),
     array( 'db' => 'pval_nominal',  'dt' => 4 ),

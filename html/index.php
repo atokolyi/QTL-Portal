@@ -65,14 +65,14 @@
   <body>
 
 <nav class="navbar navbar-inverse">
-	  <div class="container-fluid" style="padding-left: 0px">
+	  <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a href="/" class="navbar-left"><img height=48 style="padding-left: 2px; padding-top: 2px; padding-right: 2px;" src="/images/INTERVAL_rna_portal_logo.svg"></a>
+	<a class="navbar-brand" href="#">QTL-Portal</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">

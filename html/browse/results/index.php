@@ -3,7 +3,7 @@
 //ini_set('display_errors', 1);
 
 //echo $_GET['filter'];
-$g=preg_replace("/[^A-Za-z0-9 :\+\-\_]/", '', $_GET['filter']);
+$g=preg_replace("/[^A-Za-z0-9\. :\+\-\_]/", '', $_GET['filter']);
 $get = explode(' ',$g);
 
 #$get=preg_replace("/[^A-Za-z0-9 ]/", '', explode(' ',$_GET['filter']));
@@ -27,11 +27,8 @@ if (count($get)==16) {
 	if ($conn->connect_error) {
 	  die("Error: SQL connection failed: " . $conn->connect_error);
 	}
-	//$phen = "10:89010600:89011999:clu_91129_+";
-	//$phen = "10:114601961:114821273:clu_178663_-";
-	//$phen = "10:100979011:100983755:clu_178141_-";
+	$sql = 'SELECT * FROM `'.$id.'_phenstats` WHERE phenotype_id="'.$phen.'"';
 	// Could get the lead SNP from here to make the summstat lead SNP below just a tiny bit more signif to make LD variant
-	$sql = 'SELECT * FROM '.$id.'_phenstats WHERE phenotype_id="'.$phen.'"';	
 	$result = $conn->query($sql);
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -40,7 +37,7 @@ if (count($get)==16) {
 	}
 
 
-	$sql = 'SELECT abs(slope/slope_se) as "zscore",slope,variant_chr,pval_nominal,variant_pos,variant_posid,variant_rsid,variant_ref,variant_alt FROM '.$id.'_sumstats WHERE phenotype_id="'.$phen.'" AND variant_pos>='.$sstart.' AND variant_pos<='.$send.' AND variant_chr="'.$chrom.'"';
+	$sql = 'SELECT z_score_abs,slope,variant_chr,pval_nominal,variant_pos,variant_posid,variant_rsid,variant_ref,variant_alt FROM `'.$id.'_sumstats` WHERE phenotype_id="'.$phen.'" AND variant_pos>='.$sstart.' AND variant_pos<='.$send.' AND variant_chr="'.$chrom.'"';
 	//echo $sql;
 
 	$result = $conn->query($sql);
@@ -57,13 +54,12 @@ if (count($get)==16) {
 		$alt_allele = array();
 		while($row = $result->fetch_assoc()) {
 			//var_dump($row);
-			//echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
 			//Collect each col member in to seperate arrays
 			$analysis[] = 45;
 			$beta[] = floatval($row['slope']);
 			$chromosome[] = $row['variant_chr'];
 			//echo $row['pval_nominal'];
-			$log_pvalue[] = floatval($row['zscore']);
+			$log_pvalue[] = floatval($row['z_score_abs']);
 			if (TRUE) {
 				if ($row['pval_nominal']==0) {
 					#if ($row['variant_rsid']==$lead_snp) {

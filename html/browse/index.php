@@ -65,14 +65,14 @@
   <body>
 
 <nav class="navbar navbar-inverse">
-	  <div class="container-fluid" style="padding-left: 0px">
+	  <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a href="/" class="navbar-left"><img height=48 style="padding-left: 2px; padding-top: 2px; padding-right: 2px;" src="/images/INTERVAL_rna_portal_logo.svg"></a>
+<a class="navbar-brand" href="#">QTL-Portal</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
@@ -102,38 +102,38 @@
 
 <div class="container-fluid text-center">    
   <div class="row content">
-    <br>
+	<br>
     <div class="col-sm-5 text-left"> 
+	<h4>Phenotype summary</h4>
+	<br>
       <table id="phen_table" class="display" style="width:100%">
         <thead>
             <tr>
                 <th>Gene ID</th>
                 <th>Gene</th>
-                <th>Type</th>
-                <th>Range</th>
+                <th>gene_chr</th>
+                <th>gene_start</th>
                 <th>Lead RsID</th>
                 <th>qVal</th>
                 <th>Z-score</th>
+                <th>gene_end</th>
             </tr>
         </thead>
       </table>
     </div>
     <div class="col-sm-7 text-left"> 
-	    <div class="col-sm-4 text-left"> 
-	      <div id='boxplot'></div>
-	      <div id="toggle_v"><a onclick="tog_v()" href="javascript:void(0);">> Show violin plot</a></div>
-	      <div id="toggle_b" style="display:none"><a onclick="tog_b()" href="javascript:void(0);">> Show box plot</a></div>
-	    </div>
-	    <div class="col-sm-8 text-left"> 
+	    <div class="col-sm-12 text-left"> 
 		<br>
 	      <div id="lz-plot"></div>
 	    </div>
 	    <div class="col-sm-12 text-left">
+		<h4>Summary statistics</h4>
+		<br>
 	      <table id="sum_table" class="display" style="width:100%">
 		<thead>
 		    <tr>
-			<th>Variant RsID</th>
 			<th>Variant PosID</th>
+			<th>TSS Distance</th>
 			<th>AF</th>
 			<th>Beta</th>
 			<th>P-val</th>
@@ -176,11 +176,17 @@
 			"pageLength": 15,
 			"initComplete": function(settings, json) {
 				$( $('#phen_table').DataTable().row(0).nodes() ).addClass('selected');
+				var sendLZ = [table.row(0).data()[0],table.row(0).data()[2],table.row(0).data()[3],table.row(0).data()[7]]
+				console.log(sendLZ);
+				// First lets just make the table move/refresh
+				window.sendBox = [table.row(0).data()[0],table.row(0).data()[1],table.row(0).data()[4]]
+				jumpTo(sendLZ);
+				make_table(window.sendBox[0]);
 			},
 			"serverSide": true,
 			"ajax": "fetch.php?id=" + window.location.href.split("=").slice(-1),
 			"order": [[ 6, "desc" ]],
-			"columnDefs": [ { "targets": [ 0,3 ], "visible": false, "searchable": true },
+			"columnDefs": [ { "targets": [ 0,2,3,7 ], "visible": false, "searchable": true },
 						{"targets": [ 5 ], 'render': $.fn.dataTable.render.lowp() }]
     		} );
 		$('#phen_table tbody').on('click', 'tr', function() {
@@ -190,11 +196,10 @@
 			    console.log($(this));
 			    table.$('tr.selected').removeClass('selected');
 			    $(this).addClass('selected');
-				var sendLZ = table.row(this).data()[0]+"|"+table.row(this).data()[3];
+				var sendLZ = [table.row(this).data()[0],table.row(this).data()[2],table.row(this).data()[3],table.row(this).data()[7]]
 				console.log(sendLZ);
 				// First lets just make the table move/refresh
 				window.sendBox = [table.row(this).data()[0],table.row(this).data()[1],table.row(this).data()[4]]
-				makeBoxplot(sendBox,window.plot_type);
 				jumpTo(sendLZ);
 				make_table(window.sendBox[0]);
 			}
@@ -217,70 +222,15 @@
 		
 	}
 	
-	function tog_v() {
-		// Turn on violin
-		var x = document.getElementById("toggle_v");
-		x.style.display = "none";
-		var x = document.getElementById("toggle_b");
-		x.style.display = "block";
-		window.plot_type = "violin";
-		makeBoxplot(window.sendBox,window.plot_type);
-	};
-	function tog_b() {
-		// Turn on violin
-		var x = document.getElementById("toggle_v");
-		x.style.display = "block";
-		var x = document.getElementById("toggle_b");
-		x.style.display = "none";
-		window.plot_type = "box";
-		makeBoxplot(window.sendBox,window.plot_type);
-	};
 
-	function makeBoxplot(sendBox,plot_type) {
-		var phen = sendBox[0];
-		var gene = sendBox[1];
-		var variant_rsid = sendBox[2];
-		//var phen = "ENSG00000211625";
-		//var phen = "ENSG00000002933";
-		$.getJSON('/browse/boxplot.php?phen='+phen, function(data) {
-			var name1 = data['data']['name1'];
-			var name2 = data['data']['name2'];
-			var name3 = data['data']['name3'];
-			var list1 = data['data']['list1'].split(',');
-			var list2 = data['data']['list2'].split(',');
-			var list3 = data['data']['list3'].split(',');
-			//var phen = data['data']['phenotype_id'];
-			// Just pull gene name and rsid from table
-			var data = [];
-			var params = {type: plot_type, box: {visible: true}, opacity: 0.9, line: {color: 'black', opacity: 1}};
-			if (list1[0]!="") {
-				var trace1 = Object.assign({name: name1, y: list1, fillcolor: '#ff8080'},params);
-				data.push(trace1);
-			};
-			if (list2[0]!="") {
-				var trace2 = Object.assign({name: name2, y: list2, fillcolor: '#de82ff'},params);
-				data.push(trace2);
-			};
-			if (list3[0]!="") {
-				var trace3 = Object.assign({name: name3, y: list3, fillcolor: '#7a78fa'},params);
-				data.push(trace3);
-			};
-
-			var layout = {margin: {b: 90, t:80, l:15, r:40}, showlegend: false, title: 'QTL plot for<br>'+gene+' / '+variant_rsid , xaxis: {tickangle: 35 } };
-			Plotly.newPlot('boxplot', data, layout);
-		});
-	};
-
-	function jumpTo(region) {
-		var send = region.split("|");
+	function jumpTo(send) {
 		var geneid = send[0];
-		var target = send[1].split(":");
-		var chr = +target[0];
-		var start = +target[1]-100000;
-		var end  = +target[2]+100000;
-		if (region.slice(-1)=="+") {
-			region = region.slice(0,-1) + "%2b";
-		}
+		var chr = send[1];
+		var start = +send[2]-100000;
+		var end  = +send[3]+100000;
+		//if (region.slice(-1)=="+") {
+		//		region = region.slice(0,-1) + "%2b";
+		//}
 		const AssociationLZ = LocusZoom.Adapters.get('AssociationLZ');
 		const apiBase = 'https://portaldev.sph.umich.edu/api/v1/';
 		var base = ""
@@ -327,7 +277,7 @@
 			  id: "sStart_line",
 			  type: "orthogonal_line",
 			  orientation: "vertical",
-			  offset: +target[1],
+			  offset: +send[2],
 			  style: {
 			    "stroke": "#FF3333",
 			    "stroke-width": "2px",
@@ -338,7 +288,7 @@
 			  id: "sEnd_line",
 			  type: "orthogonal_line",
 			  orientation: "vertical",
-			  offset: +target[2],
+			  offset: +send[3],
 			  style: {
 			    "stroke": "#FF3333",
 			    "stroke-width": "2px",
@@ -350,9 +300,8 @@
 		return false;
 	}
 	$(document).ready(function() {
-	    makeBoxplot(window.sendBox,window.plot_type);
-	    jumpTo("ENSG00000013573|12:31073860:31104799");
-	    make_table(window.sendBox[0]);
+	    //jumpTo("ENSG00000013573|12:31073860:31104799");
+	    //make_table(window.sendBox[0]);
 	} );
 
       </script>
