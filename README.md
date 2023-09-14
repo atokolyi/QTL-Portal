@@ -18,7 +18,7 @@
    cd qtl_portal
    docker-compose up -d
    ```
-3. Open the QTL portal in your web browser by visiting [http://localhost:8080](http://localhost:8080)
+3. Open the QTL portal in your web browser by visiting [http://localhost:50580](http://localhost:50580)
 
 
 <!-- USAGE EXAMPLES -->
@@ -41,7 +41,7 @@ untar GTEx_Analysis_v8_eQTL.tar
 ```
 2. View the imported summary statistics
 
-Refresh the QTL Portal ([http://localhost:8080](http://localhost:8080)) and click `GTEX-Lung-eQTLs` in the toolbar.
+Refresh the QTL Portal ([http://localhost:50580](http://localhost:50580)) and click `GTEX-Lung-eQTLs` in the toolbar.
 
 
 ### Formatting other summary statistics
@@ -56,7 +56,7 @@ Refresh the QTL Portal ([http://localhost:8080](http://localhost:8080)) and clic
 - `nominal-summary-statistics.tsv` is a tab-separated file with column names:
 2. View the imported summary statistics
 
-Refresh the QTL Portal ([http://localhost:8080](http://localhost:8080)) and click the name in the toolbar 
+Refresh the QTL Portal ([http://localhost:50580](http://localhost:50580)) and click the name in the toolbar 
 
 3. Delete imported summary statistics
 - Summary statistics imported in to the database persist through reboots unless deleted with:
